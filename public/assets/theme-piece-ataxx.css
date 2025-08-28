@@ -1,0 +1,15 @@
+.ataxx .cg-wrap piece.p-piece.white {
+  background-image: url('images/pieces/ataxx/wP.svg');
+}
+
+.ataxx .cg-wrap piece.p-piece.black {
+  background-image: url('images/pieces/ataxx/bP.svg');
+}
+
+.ataxx .cg-wrap piece._-piece {
+  background-image: url('images/wallsquare/brick.svg');
+}
+
+.ataxx .cg-wrap piece.unknown {
+  background-image: url('images/fogofwar/unknown.svg');
+}

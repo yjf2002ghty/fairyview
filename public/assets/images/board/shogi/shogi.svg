@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg4755"
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   sodipodi:docname="shogi.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   inkscape:export-filename="C:\Users\danle\OneDrive\Pictures\Chess Variants\Shogi\Boards\Square\solid-natural.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata4761">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4759" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     id="namedview4757"
+     showgrid="false"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="341.53258"
+     inkscape:cy="788.42406"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4763"
+     inkscape:document-rotation="0"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true">
+    <sodipodi:guide
+       position="-30,796"
+       orientation="0,1"
+       id="guide410"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g4763"
+     transform="translate(0,1192.0247)">
+    <rect
+       style="fill:#fdd775;fill-opacity:1;stroke:#ffeeaa;stroke-width:1.66854;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect5591-8"
+       width="1198.2262"
+       height="1198.3315"
+       x="0.83648807"
+       y="-1191.1904" />
+    <ellipse
+       cx="400.34109"
+       cy="-791.62457"
+       id="circle843"
+       style="stroke-width:2.37953"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       rx="8.7888641"
+       ry="8.788497" />
+    <ellipse
+       cx="400.66351"
+       cy="-392.12201"
+       id="circle845"
+       style="stroke-width:2.47003"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       rx="8.7888641"
+       ry="8.788497" />
+    <ellipse
+       cx="799.53168"
+       cy="-791.63104"
+       id="circle847"
+       style="stroke-width:2.37778"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       rx="8.7888641"
+       ry="8.788497" />
+    <ellipse
+       id="circle849"
+       style="stroke-width:2.37953"
+       cy="-392.44443"
+       cx="799.53815"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       rx="8.7888641"
+       ry="8.788497" />
+    <path
+       d="M 1.1542388,-1190.795 V 6.7456614 M 134.21988,-1190.795 V 6.7456614 M 267.28574,-1190.795 V 6.7456614 M 400.35108,-1190.795 V 6.7456614 M 533.41672,-1190.795 c 0,427.29121 0.28588,799.02689 0,1197.5406614 M 666.48207,-1190.795 V 6.7456614 M 799.548,-1190.795 V 6.7456614 M 932.61349,-1190.795 V 6.7456614 M 1065.6791,-1190.795 V 6.7456614 M 1198.745,-1190.795 V 6.7456614 M 1.1542388,-1190.795 H 1198.745 M 1.1542388,-1057.7348 H 1198.745 M 1.1542388,-924.67486 H 1198.745 M 1.1542388,-791.61463 c 405.4240612,-1.24581 799.1367712,-0.14823 1197.5907612,0 M 1.1542388,-658.55464 H 1198.745 M 1.1542388,-525.4948 H 1198.745 M 1.1542388,-392.43456 H 1198.745 M 1.1542388,-259.37459 H 1198.745 M 1.1542388,-126.31444 H 1198.745 M 1.1542388,6.7456614 H 1198.745"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.3822px"
+       id="path22173"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>

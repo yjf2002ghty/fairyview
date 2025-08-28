@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <base target="_blank">
+    <style>
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .required:before {
+            content: "*";
+            color: red;
+            margin-right: 5px;
+        }
+
+        .warning {
+            color: orange;
+        }
+
+        #domain {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <script src="./linkgen_bundle.js" defer></script>
+    <h1>Fairy-Stockfish PGN Viewer Link Generator</h1>
+    <h3 class="required">Webpage address (Keep this unchanged unless you want to use another deployment of FairyView on other websites):</h3>
+    <input type="text" id="domain">
+    <h3>Content of custom CSS (If you need to load custom piece or board graphics, or change the appearance of FairyView UI):</h3>
+    <textarea id="css" rows="20" cols="150"></textarea>
+    <button id="css-example">Example: Dark theme</button>
+    <h3>Content of variants.ini (If your variant is a custom variant and needs an INI file. Built-in variants should ignore this):</h3>
+    <textarea id="ini" rows="20" cols="150"></textarea>
+    <button id="ini-example">Example: Tic tac toe variant</button>
+    <h3 class="required">Content of PGN (Should only contain 1 game and include headers):</h3>
+    <textarea id="pgn" rows="20" cols="150"></textarea>
+    <button id="pgn-example">Example: A chessbase live game</button>
+    <h3>Move notation format:</h3>
+    <select id="notation">
+        <option>Standard/Short Algebraic Notation Without Piece Type Omission (DEFAULT)</option>
+        <option>Standard/Short Algebraic Notation (SAN)</option>
+        <option>Long Algebraic Notation (LAN)</option>
+        <option>Shogi Hosking Notation (SHOGI_HOSKING)</option>
+        <option>Shogi George Hodges Notation (SHOGI_HODGES)</option>
+        <option>Shogi George Hodges Number-only Notation (SHOGI_HODGES_NUMBER)</option>
+        <option>Janggi Notation (JANGGI)</option>
+        <option>World Xiangqi Federation Notation (XIANGQI_WXF)</option>
+        <option>Thai Standard/Short Algebraic Notation (THAI_SAN)</option>
+        <option>Thai Long Algebraic Notation (THAI_LAN)</option>
+    </select>
+    <h3>Board coordinate format:</h3>
+    <select id="coordinate">
+        <option>Chess Letter-Algebraic (ALGEBRAIC)</option>
+        <option>Shogi Algebraic-Letter (SHOGI_ENGLET)</option>
+        <option>Shogi Algebraic (SHOGI_ARBNUM)</option>
+        <option>Shogi Algebraic-Kanji (SHOGI_HANNUM)</option>
+        <option>Janggi Algebraic (JANGGI)</option>
+        <option>Xiangqi Algebraic (XIANGQI_ARBNUM)</option>
+        <option>Xiangqi Algebraic-Hanzi (XIANGQI_HANNUM)</option>
+        <option>Makruk Thai Letter-Thai Algebraic (THAI_ALGEBRAIC)</option>
+    </select>
+    <button id="genlink">Generate Link</button>
+    <h2>Generated Link:</h2>
+    <a id="linktext">(Not generated yet)</a>
+    <h2>Using As Embedded PGN Viewer:</h2>
+    <p id="localhost-warning" class="warning">Warning: You are using "localhost" as webpage address, which means only you yourself can access this link. If you want to let others view this game, you need to use a public link.</p>
+    <p>Add following iframe element to webpage:</p>
+    <code id="iframe-code">(Not generated yet)</code>
+</body>

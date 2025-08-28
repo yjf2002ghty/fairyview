@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 364 364"
+   id="svg851"
+   sodipodi:docname="torishogiboard.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   width="364"
+   height="364"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata855">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     id="namedview853"
+     showgrid="false"
+     inkscape:zoom="1.5703703"
+     inkscape:cx="132.13444"
+     inkscape:cy="197.08727"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg851"
+     inkscape:document-rotation="0"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <defs
+     id="defs839" />
+  <rect
+     style="opacity:1;fill:#fdd775;fill-opacity:1;stroke:none;stroke-width:21.1153;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+     id="rect14625"
+     width="364.05414"
+     height="364.06888"
+     x="-0.034437638"
+     y="-0.034437258" />
+  <path
+     inkscape:connector-curvature="0"
+     d="M -0.03443764,-0.03443726 V 363.93713 M 51.975401,-0.03443726 V 363.93713 M 103.98524,-0.03443726 V 363.93713 M 155.99508,-0.03443726 V 363.93713 M 208.00492,-0.03443726 V 363.93713 M 260.01476,-0.03443726 V 363.93713 M 312.0246,-0.03443726 V 363.93713 M 364.03444,-0.03443726 V 363.93713 M -0.03443764,-0.03443726 H 364.01969 M -0.03443764,51.975402 H 364.01969 M -0.03443764,103.98524 H 364.01969 M -0.03443764,155.99508 H 364.01969 M -0.03443764,208.00492 H 364.01969 M -0.03443764,260.01476 H 364.01969 M -0.03443764,312.0246 H 364.01969 M -0.03443764,364.03444 H 364.01969"
+     style="fill:none;stroke:#000000;stroke-width:0.931125px"
+     id="path22173"
+     sodipodi:nodetypes="cccccccccccccccccccccccccccccccc" />
+  <ellipse
+     cx="103.98527"
+     cy="103.98524"
+     id="circle843"
+     rx="4.0007567"
+     ry="3.4673226"
+     style="stroke-width:0.931125" />
+  <ellipse
+     cx="103.98527"
+     cy="260.01477"
+     id="circle845"
+     rx="4.0007567"
+     ry="3.4673226"
+     style="stroke-width:0.931125" />
+  <ellipse
+     cx="260.01477"
+     cy="103.98524"
+     id="circle847"
+     rx="4.0007567"
+     ry="3.4673226"
+     style="stroke-width:0.931125" />
+  <ellipse
+     cx="260.01477"
+     cy="260.01477"
+     id="circle849"
+     rx="4.0007567"
+     ry="3.4673226"
+     style="stroke-width:0.931125" />
+</svg>

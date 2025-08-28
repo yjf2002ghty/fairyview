@@ -1,0 +1,7 @@
+.chessground-wrapper.ataxxboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.ataxxboard.board7x7 cg-board {
+  background-image: url('images/board/ataxx/ataxxboard.svg');
+}

@@ -1,0 +1,7 @@
+.chessground-wrapper.minixiangqiboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.minixiangqiboard.board7x7 cg-board {
+  background-image: url('images/board/minixiangqi/minixiangqi.svg');
+}

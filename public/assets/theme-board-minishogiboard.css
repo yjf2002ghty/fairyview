@@ -1,0 +1,8 @@
+.chessground-wrapper.minishogiboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+
+.minishogiboard.board5x5 cg-board {
+  background-image: url('images/board/minishogi/minishogi.svg');
+}

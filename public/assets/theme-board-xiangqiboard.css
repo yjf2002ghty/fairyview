@@ -1,0 +1,7 @@
+.chessground-wrapper.xiangqiboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.xiangqiboard.board9x10 cg-board {
+  background-image: url('images/board/xiangqi/xiangqi.svg');
+}

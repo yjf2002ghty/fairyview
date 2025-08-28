@@ -1,0 +1,7 @@
+.chessground-wrapper.makrukboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.makrukboard.board8x8 cg-board {
+  background-image: url('images/board/makruk/makruk.svg');
+}

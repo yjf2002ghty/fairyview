@@ -1,0 +1,7 @@
+.chessground-wrapper.dobutsuboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.dobutsuboard.board3x4 cg-board {
+  background-image: url('images/board/dobutsu/dobutsuboard.svg');
+}

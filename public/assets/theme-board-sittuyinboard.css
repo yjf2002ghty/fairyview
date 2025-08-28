@@ -1,0 +1,7 @@
+.chessground-wrapper.sittuyinboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.sittuyinboard.board8x8 cg-board {
+  background-image: url('images/board/sittuyin/sittuyin.svg');
+}

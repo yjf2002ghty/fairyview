@@ -1,0 +1,7 @@
+.chessground-wrapper.janggiboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.janggiboard.board9x10 cg-board {
+  background-image: url('images/board/janggi/janggi.svg');
+}

@@ -1,0 +1,52 @@
+.xiangqi .cg-wrap piece.p-piece.white {
+  background-image: url('images/pieces/wikim/wP.svg');
+}
+.xiangqi .cg-wrap piece.n-piece.white {
+  background-image: url('images/pieces/wikim/wN.svg');
+}
+.xiangqi .cg-wrap piece.r-piece.white {
+  background-image: url('images/pieces/wikim/wR.svg');
+}
+.xiangqi .cg-wrap piece.k-piece.white {
+  background-image: url('images/pieces/wikim/wK.svg');
+}
+.xiangqi .cg-wrap piece.a-piece.white {
+  background-image: url('images/pieces/wikim/wA.svg');
+}
+.xiangqi .cg-wrap piece.c-piece.white {
+  background-image: url('images/pieces/wikim/wC.svg');
+}
+.xiangqi .cg-wrap piece.b-piece.white {
+  background-image: url('images/pieces/wikim/wB.svg');
+}
+
+
+.xiangqi .cg-wrap piece.p-piece.black {
+  background-image: url('images/pieces/wikim/bP.svg');
+}
+.xiangqi .cg-wrap piece.b-piece.black {
+  background-image: url('images/pieces/wikim/bB.svg');
+}
+.xiangqi .cg-wrap piece.n-piece.black {
+  background-image: url('images/pieces/wikim/bN.svg');
+}
+.xiangqi .cg-wrap piece.r-piece.black {
+  background-image: url('images/pieces/wikim/bR.svg');
+}
+.xiangqi .cg-wrap piece.k-piece.black {
+  background-image: url('images/pieces/wikim/bK.svg');
+}
+.xiangqi .cg-wrap piece.a-piece.black {
+  background-image: url('images/pieces/wikim/bA.svg');
+}
+.xiangqi .cg-wrap piece.c-piece.black {
+  background-image: url('images/pieces/wikim/bC.svg');
+}
+
+.xiangqi .cg-wrap piece._-piece {
+  background-image: url('images/wallsquare/barrier.svg');
+}
+
+.xiangqi .cg-wrap piece.unknown {
+  background-image: url('images/fogofwar/unknown.svg');
+}

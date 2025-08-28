@@ -1,3 +1,7 @@
+public/*.js
+public/*.html
+public/*.wasm
+
 # Logs
 logs
 *.log

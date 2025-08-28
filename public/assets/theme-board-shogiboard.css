@@ -1,0 +1,7 @@
+.chessground-wrapper.shogiboard {
+  --dark-square-color: #000;
+  --light-square-color: #000;
+}
+.shogiboard.board9x9 cg-board {
+  background-image: url('images/board/shogi/shogi.svg');
+}

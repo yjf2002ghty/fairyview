@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "serve": "serve public --no-compression",
+    "build": "cp node_modules/ffish-es6/ffish.wasm public/ && browserify -p esmify src/main.js -o public/bundle.js && browserify -p esmify src/linkgen_main.js -o public/linkgen_bundle.js && node generate_html.js > src/index.html && uglifyjs public/*bundle.js -c -m --in-situ && html-minifier -c ./html_minifier.json --input-dir src --output-dir public --file-ext html && rm -f src/index.html && rm -f public/index_head.html && echo && echo Build finished with compression and mangling to reduce file size and console logging removed to reduce memory usage. && echo \"To build without compression, mangling and console logging removal, run \\\"npm run debug-build\\\"\".",
+    "buildwithcmd": "copy /Y node_modules\\ffish-es6\\ffish.wasm public\\ && browserify -p esmify src/main.js -o public/bundle.js && browserify -p esmify src\\linkgen_main.js -o public\\linkgen_bundle.js && node generate_html.js > src/index.html && uglifyjs public\\*bundle.js -c -m --in-situ && html-minifier -c ./html_minifier.json --input-dir src --output-dir public --file-ext html && del /f /q src\\index.html && del /f /q public\\index_head.html && echo. && echo Build finished with compression and mangling to reduce file size and console logging removed to reduce memory usage. && echo To build without compression, mangling and console logging removal, run \"npm run debug-buildwithcmd\".",
+    "debug-build": "cp node_modules/ffish-es6/ffish.wasm public/ && browserify -p esmify src/main.js -o public/bundle.js && browserify -p esmify src/linkgen_main.js -o public/linkgen_bundle.js && node generate_html.js > src/index.html && cp -f src/*.html public && rm -f src/index.html && rm -f public/index_head.html && echo && echo Debug build finished.",
+    "debug-buildwithcmd": "copy /Y node_modules\\ffish-es6\\ffish.wasm public\\ && browserify -p esmify src/main.js -o public/bundle.js && browserify -p esmify src\\linkgen_main.js -o public\\linkgen_bundle.js && node generate_html.js > src/index.html && copy /Y src\\*.html public\\ && del /f /q src\\index.html && del /f /q public\\index_head.html && echo. && echo Debug build finished.",
+    "format": "prettier --write src/*",
+    "format:check": "prettier --check src/*"
+  },
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "chessgroundx": "^10.6.3",
+    "express": "^5.1.0",
+    "ffish-es6": "^0.7.7",
+    "lzma": "^2.3.2"
+  },
+  "devDependencies": {
+    "browser-resolve": "^2.0.0",
+    "browserify": "^17.0.0",
+    "clean-css": "^5.3.3",
+    "esmify": "^2.1.1",
+    "html-minifier": "^4.0.0",
+    "prettier": "^3.2.5",
+    "uglify-js": "^3.19.3",
+    "vercel": "^33.5.2",
+    "watchify": "^4.0.0"
+  }
+}
