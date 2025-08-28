@@ -9,7 +9,7 @@ Go to https://fairyview.vercel.app/linkgen.html and fill necessary fields to gen
 
 - Webpage address (**Required**): The host and path to this page. You don't need to change this unless you want to use a FairyView instance not deployed at [https://fairyview.vercel.app/](https://fairyview.vercel.app/).
 
-- Custom CSS: You can provide a CSS file to change the appearance of FairyView, or provide your own graphics of pieces and board.
+- Custom CSS: You can provide a CSS file to change the appearance of FairyView, or provide your own graphics of pieces and board. Please refer to [CSS.md](./CSS.md) for more information.
 
 - Variants.ini: If your variant needs a variants.ini, which means it is not a built-in variant, then you need to provide your variants.ini here.
 
