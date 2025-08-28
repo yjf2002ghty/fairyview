@@ -34,7 +34,7 @@ An example to change board graphics:
 ```css
 /*Change the board image*/
 cg-board {
-    background-image: url('https://exapmle.com/path/to/image.png') !important;
+    background-image: url('https://example.com/path/to/image.png') !important;
 }
 
 /*If you want to provide graphics with different board sizes (width and height), use this syntax*/
