@@ -71,8 +71,8 @@ piece.b-piece.black {
 }
 
 /*Change first mover's (White's) piece represented by character "a", from first mover's perspective*/
-.orientation-white piece.b-piece.white {
-    background-image: url("wA1.png") !important;
+.orientation-white piece.a-piece.white {
+    background-image: url("wA1.png") !important;a
 }
 
 /*Change both side's piece represented by character "d", on 9x10 board*/
