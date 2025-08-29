@@ -275,173 +275,237 @@ export function DownloadFile(content, fileName, mimeType) {
     document.body.removeChild(a);
 }
 
-export function ParseFEN(fen) {
-    if (typeof fen!="string") {
-      throw TypeError;
-    }
-    let i=0;
-    let j=0;
-    const pieceprefixes=['+','|'];
-    const piecesuffixes=['~'];
-    const specialpieces=['*'];
-    let boardwidth=0;
-    let boardheight=0;
-    let chcode=0;
-    let ParserState=-1;
-    let pieces=[];
-    let piececolor="";
-    let pieceid="";
-    let firstrow=true;
-    let columncount=0;
-    let prefix="";
-    let suffix="";
-    let blankcount=0;
-    let ch;
-    const fenelem=fen.split(/[ ]+/);
-    const position=fenelem[0];
-    for (i=0;i<position.length;i++) {
-        ch=position[i];
-        chcode=ch.charCodeAt(0);
-        if (ParserState==-1) {  //Initial state
-            if (chcode>=65 && chcode<=90) {
-                boardheight=1;
-                columncount++;
-                piececolor="white";
-                pieceid=String.fromCharCode(chcode+32);
-                ParserState=1;
-            }
-            else if (chcode>=97 && chcode<=122) {
-                boardheight=1;
-                columncount++;
-                piececolor="black";
-                pieceid=ch;
-                ParserState=1;
-            }
-            else if (chcode>=48 && chcode<=57) {
-                boardheight=1;
-                blankcount=parseInt(ch);
-                ParserState=0;
-            }
-            else if (pieceprefixes.includes(ch)) {
-                if (prefix.includes(ch)) {
-                    console.warn(`Duplicated piece prefix "${ch}" at char ${i+1} of FEN.`);
-                    return null;
-                }
-                boardheight=1;
-                prefix+=ch;
-                ParserState=0;
-            }
-            else if (specialpieces.includes(ch)) {
-                columncount++;
-                boardheight=1;
-                pieces.push({role: ch, color: null, prefix: null, suffix: null});
-                ParserState=0;
-            }
-            else {
-                console.warn(`Illegal character "${ch}" at char ${i+1} of FEN.`);
-                return null;
-            }
-        }
-        else if (ParserState==0) {  //Main state
-            if (blankcount>0 && (chcode<48 || chcode>57)) {
-                for (j=0;j<blankcount;j++) {
-                    pieces.push({role: null, color: null, prefix: null, suffix: null});
-                }
-                columncount+=blankcount;
-                blankcount=0;
-            }
-            if (chcode>=65 && chcode<=90) {
-                piececolor="white";
-                pieceid=String.fromCharCode(chcode+32);
-                columncount++;
-                ParserState=1;
-            }
-            else if (chcode>=97 && chcode<=122) {
-                piececolor="black";
-                pieceid=ch;
-                columncount++;
-                ParserState=1;
-            }
-            else if (chcode>=48 && chcode<=57) {
-                if (prefix.length>0) {
-                    console.warn(`Illegal prefix "${prefix}" describing empty squares at char ${i+1} of FEN.`);
-                    return null;
-                }
-                blankcount=blankcount*10+parseInt(ch);
-                prefix="";
-                suffix="";
-            }
-            else if (pieceprefixes.includes(ch)) {
-                if (prefix.includes(ch)) {
-                    console.warn(`Duplicated piece prefix "${ch}" at char ${i+1} of FEN.`);
-                    return null;
-                }
-                prefix+=ch;
-            }
-            else if (specialpieces.includes(ch)) {
-                if (prefix.length>0) {
-                    console.warn(`Illegal prefix "${prefix}" describing special piece at char ${i+1} of FEN.`);
-                    return null;
-                }
-                columncount++;
-                pieces.push({role: ch, color: null, prefix: null, suffix: null});
-            }
-            else if (ch=='/') {
-                if (firstrow) {
-                    boardwidth=columncount;
-                    firstrow=false;
-                }
-                else if (columncount!=boardwidth) {
-                    console.warn(`Column count mismatch at row ${boardheight}. Expected: ${boardwidth}, Actual: ${columncount}`);
-                    return null;
-                }
-                columncount=0;
-                boardheight++;
-                if (prefix.length>0) {
-                    console.warn(`Illegal prefix "${prefix}" at end of row at char ${i+1} of FEN.`);
-                    return null;
-                }
-            }
-            else {
-                console.warn(`Illegal character "${ch}" at char ${i+1} of FEN.`);
-                return null;
-            }
-        }
-        else if (ParserState==1) {  //Parsing suffixes
-            if (piecesuffixes.includes(ch)) {
-                suffix+=ch;
-            }
-            else {
-                pieces.push({role: pieceid, color: piececolor, prefix: prefix, suffix: suffix});
-                prefix="";
-                suffix="";
-                i--;
-                ParserState=0;
-            }
-        }
-    }
-    if (ParserState==0) {
-        if (blankcount>0) {
-            for (j=0;j<blankcount;j++) {
-                pieces.push({role: null, color: null, prefix: null, suffix: null});
-            }
-            columncount+=blankcount;
-        }
-    }
-    else if (ParserState==1) {
-        pieces.push({role: pieceid, color: piececolor, prefix: prefix, suffix: suffix});
-        prefix="";
-    }
-    if (firstrow) {
-        boardwidth=columncount;
-    }
-    else if (columncount!=boardwidth) {
-        console.warn(`Column count mismatch at row ${boardheight}. Expected: ${boardwidth}, Actual: ${columncount}`);
+export function ConvertFENtoSFEN(fen) {
+    if (typeof fen != "string") {
         return null;
     }
-    if (prefix.length>0) {
-        console.warn(`Illegal prefix "${prefix}" at end of row at char ${i+1} of FEN.`);
+    let fen_list = fen.trim().split(" ");
+    let sfen = ["", "", "", ""];
+    if (fen_list.length != 6 && fen_list.length != 7) {
         return null;
     }
-    return pieces;
+    if (!fen_list[0].includes("[") || !fen_list[0].includes("]")) {
+        if (fen_list[0].indexOf("[") >= 0 || fen_list[0].indexOf("]") >= 0) {
+            return null;
+        }
+        sfen[0] = fen_list[0];
+        sfen[2] = "";
+    } else {
+        if (
+            fen_list[0].indexOf("[") > fen_list[0].indexOf("]") ||
+            fen_list[0].indexOf("]") < 0
+        ) {
+            return null;
+        }
+        sfen[0] = fen_list[0].substring(0, fen_list[0].indexOf("["));
+        sfen[2] = fen_list[0].substring(
+            fen_list[0].indexOf("[") + 1,
+            fen_list[0].indexOf("]"),
+        );
+    }
+    if (fen_list[1] == "w") {
+        sfen[1] = "b";
+    } else if (fen_list[1] == "b") {
+        sfen[1] = "w";
+    } else {
+        return null;
+    }
+    if (sfen[2].length == 0) {
+        sfen[2] = "-";
+    } else {
+        const charCount = sfen[2].split("").reduce((pre, cur) => {
+            if (cur in pre) {
+                pre[cur]++;
+            } else {
+                pre[cur] = 1;
+            }
+            return pre;
+        }, {});
+        sfen[2] = "";
+        let ch;
+        for (ch in charCount) {
+            if (charCount[ch] > 1) {
+                sfen[2] += ch.toString() + charCount[ch].toString();
+            } else {
+                sfen[2] += ch.toString();
+            }
+        }
+    }
+    if (parseInt(fen_list.at(-1)) != NaN) {
+        sfen[3] = parseInt(fen_list.at(-1)).toString();
+    } else {
+        return null;
+    }
+    return sfen.join(" ");
 }
+
+// export function ParseFEN(fen) {
+//     if (typeof fen!="string") {
+//       throw TypeError;
+//     }
+//     let i=0;
+//     let j=0;
+//     const pieceprefixes=['+','|'];
+//     const piecesuffixes=['~'];
+//     const specialpieces=['*'];
+//     let boardwidth=0;
+//     let boardheight=0;
+//     let chcode=0;
+//     let ParserState=-1;
+//     let pieces=[];
+//     let piececolor="";
+//     let pieceid="";
+//     let firstrow=true;
+//     let columncount=0;
+//     let prefix="";
+//     let suffix="";
+//     let blankcount=0;
+//     let ch;
+//     const fenelem=fen.split(/[ ]+/);
+//     const position=fenelem[0];
+//     for (i=0;i<position.length;i++) {
+//         ch=position[i];
+//         chcode=ch.charCodeAt(0);
+//         if (ParserState==-1) {  //Initial state
+//             if (chcode>=65 && chcode<=90) {
+//                 boardheight=1;
+//                 columncount++;
+//                 piececolor="white";
+//                 pieceid=String.fromCharCode(chcode+32);
+//                 ParserState=1;
+//             }
+//             else if (chcode>=97 && chcode<=122) {
+//                 boardheight=1;
+//                 columncount++;
+//                 piececolor="black";
+//                 pieceid=ch;
+//                 ParserState=1;
+//             }
+//             else if (chcode>=48 && chcode<=57) {
+//                 boardheight=1;
+//                 blankcount=parseInt(ch);
+//                 ParserState=0;
+//             }
+//             else if (pieceprefixes.includes(ch)) {
+//                 if (prefix.includes(ch)) {
+//                     console.warn(`Duplicated piece prefix "${ch}" at char ${i+1} of FEN.`);
+//                     return null;
+//                 }
+//                 boardheight=1;
+//                 prefix+=ch;
+//                 ParserState=0;
+//             }
+//             else if (specialpieces.includes(ch)) {
+//                 columncount++;
+//                 boardheight=1;
+//                 pieces.push({role: ch, color: null, prefix: null, suffix: null});
+//                 ParserState=0;
+//             }
+//             else {
+//                 console.warn(`Illegal character "${ch}" at char ${i+1} of FEN.`);
+//                 return null;
+//             }
+//         }
+//         else if (ParserState==0) {  //Main state
+//             if (blankcount>0 && (chcode<48 || chcode>57)) {
+//                 for (j=0;j<blankcount;j++) {
+//                     pieces.push({role: null, color: null, prefix: null, suffix: null});
+//                 }
+//                 columncount+=blankcount;
+//                 blankcount=0;
+//             }
+//             if (chcode>=65 && chcode<=90) {
+//                 piececolor="white";
+//                 pieceid=String.fromCharCode(chcode+32);
+//                 columncount++;
+//                 ParserState=1;
+//             }
+//             else if (chcode>=97 && chcode<=122) {
+//                 piececolor="black";
+//                 pieceid=ch;
+//                 columncount++;
+//                 ParserState=1;
+//             }
+//             else if (chcode>=48 && chcode<=57) {
+//                 if (prefix.length>0) {
+//                     console.warn(`Illegal prefix "${prefix}" describing empty squares at char ${i+1} of FEN.`);
+//                     return null;
+//                 }
+//                 blankcount=blankcount*10+parseInt(ch);
+//                 prefix="";
+//                 suffix="";
+//             }
+//             else if (pieceprefixes.includes(ch)) {
+//                 if (prefix.includes(ch)) {
+//                     console.warn(`Duplicated piece prefix "${ch}" at char ${i+1} of FEN.`);
+//                     return null;
+//                 }
+//                 prefix+=ch;
+//             }
+//             else if (specialpieces.includes(ch)) {
+//                 if (prefix.length>0) {
+//                     console.warn(`Illegal prefix "${prefix}" describing special piece at char ${i+1} of FEN.`);
+//                     return null;
+//                 }
+//                 columncount++;
+//                 pieces.push({role: ch, color: null, prefix: null, suffix: null});
+//             }
+//             else if (ch=='/') {
+//                 if (firstrow) {
+//                     boardwidth=columncount;
+//                     firstrow=false;
+//                 }
+//                 else if (columncount!=boardwidth) {
+//                     console.warn(`Column count mismatch at row ${boardheight}. Expected: ${boardwidth}, Actual: ${columncount}`);
+//                     return null;
+//                 }
+//                 columncount=0;
+//                 boardheight++;
+//                 if (prefix.length>0) {
+//                     console.warn(`Illegal prefix "${prefix}" at end of row at char ${i+1} of FEN.`);
+//                     return null;
+//                 }
+//             }
+//             else {
+//                 console.warn(`Illegal character "${ch}" at char ${i+1} of FEN.`);
+//                 return null;
+//             }
+//         }
+//         else if (ParserState==1) {  //Parsing suffixes
+//             if (piecesuffixes.includes(ch)) {
+//                 suffix+=ch;
+//             }
+//             else {
+//                 pieces.push({role: pieceid, color: piececolor, prefix: prefix, suffix: suffix});
+//                 prefix="";
+//                 suffix="";
+//                 i--;
+//                 ParserState=0;
+//             }
+//         }
+//     }
+//     if (ParserState==0) {
+//         if (blankcount>0) {
+//             for (j=0;j<blankcount;j++) {
+//                 pieces.push({role: null, color: null, prefix: null, suffix: null});
+//             }
+//             columncount+=blankcount;
+//         }
+//     }
+//     else if (ParserState==1) {
+//         pieces.push({role: pieceid, color: piececolor, prefix: prefix, suffix: suffix});
+//         prefix="";
+//     }
+//     if (firstrow) {
+//         boardwidth=columncount;
+//     }
+//     else if (columncount!=boardwidth) {
+//         console.warn(`Column count mismatch at row ${boardheight}. Expected: ${boardwidth}, Actual: ${columncount}`);
+//         return null;
+//     }
+//     if (prefix.length>0) {
+//         console.warn(`Illegal prefix "${prefix}" at end of row at char ${i+1} of FEN.`);
+//         return null;
+//     }
+//     return pieces;
+// }

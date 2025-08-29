@@ -171,6 +171,9 @@ export class FairyView
         this.TitleWidget.SetCopyFENCallback(()=>{
             window.prompt("FEN of displayed position:",this.ChessgroundWidget.FEN);
         });
+        this.TitleWidget.SetCopySFENCallback(()=>{
+            window.prompt("SFEN of displayed position:",util.ConvertFENtoSFEN(this.ChessgroundWidget.FEN));
+        });
         this.TitleWidget.SetSavePGNCallback(()=>{
             if (Config.PGN)
             {
@@ -179,6 +182,16 @@ export class FairyView
             else
             {
                 window.alert("No PGN file loaded.");
+            }
+        });
+        this.TitleWidget.SetSaveINICallback(()=>{
+            if (Config.VariantsIni)
+            {
+                util.DownloadFile(Config.VariantsIni,"variants.ini","text/plain");
+            }
+            else
+            {
+                window.alert("No variant INI loaded.");
             }
         });
         this.TitleWidget.SetEventSite(site);

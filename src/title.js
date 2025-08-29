@@ -28,9 +28,15 @@ export class TitleWidget
         this.CopyFEN=document.createElement("p");
         this.CopyFEN.classList.add("menu-element");
         this.CopyFEN.textContent="Copy current board FEN";
+        this.CopySFEN=document.createElement("p");
+        this.CopySFEN.classList.add("menu-element");
+        this.CopySFEN.textContent="Copy current board SFEN";
         this.SavePGN=document.createElement("p");
         this.SavePGN.classList.add("menu-element");
         this.SavePGN.textContent="Save PGN";
+        this.SaveINI=document.createElement("p");
+        this.SaveINI.classList.add("menu-element");
+        this.SaveINI.textContent="Save variant INI";
         // this.SaveImage=document.createElement("p");
         // this.SaveImage.classList.add("menu-element");
         // this.SaveImage.textContent="Save current board as image";
@@ -46,7 +52,9 @@ export class TitleWidget
         this.GoToGithub.textContent="Go to Github page of this project";
         this.GoToGithub.href="https://github.com/yjf2002ghty/fairyview";
         this.Menu.appendChild(this.CopyFEN);
+        this.Menu.appendChild(this.CopySFEN);
         this.Menu.appendChild(this.SavePGN);
+        this.Menu.appendChild(this.SaveINI);
         // this.Menu.appendChild(this.SaveImage);
         this.Menu.appendChild(this.GoToEventSite);
         this.Menu.appendChild(document.createElement("hr"));
@@ -117,7 +125,7 @@ export class TitleWidget
             this.ShowMenu=false;
             this.Menu.style.display="none";
         }
-        else if (this.CopyFEN.contains(event.target) || this.SavePGN.contains(event.target) || this.GenerateNewLink.contains(event.target) || this.GoToGithub.contains(event.target))
+        else if (this.CopyFEN.contains(event.target) || this.CopySFEN.contains(event.target) || this.SavePGN.contains(event.target) || this.SaveINI.contains(event.target) || this.GenerateNewLink.contains(event.target) || this.GoToGithub.contains(event.target))
         {
             this.ShowMenu=false;
             this.Menu.style.display="none";
@@ -147,6 +155,15 @@ export class TitleWidget
         this.CopyFEN.onclick=Callback;
     }
 
+    SetCopySFENCallback(Callback)
+    {
+        if (typeof Callback!="function")
+        {
+            throw TypeError();
+        }
+        this.CopySFEN.onclick=Callback;
+    }
+
     SetSavePGNCallback(Callback)
     {
         if (typeof Callback!="function")
@@ -154,6 +171,15 @@ export class TitleWidget
             throw TypeError();
         }
         this.SavePGN.onclick=Callback;
+    }
+
+    SetSaveINICallback(Callback)
+    {
+        if (typeof Callback!="function")
+        {
+            throw TypeError();
+        }
+        this.SaveINI.onclick=Callback;
     }
 
     // SetSaveImageCallback(Callback)
