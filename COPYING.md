@@ -13,7 +13,6 @@ public/assets/images/board/shogi/* & public/assets/images/pieces/shogi/* | [Lish
 public/assets/images/board/cobalt/* | [dpldgr](https://github.com/dpldgr) | [dpldgr](https://github.com/dpldgr) | [GPLv3+] |
 public/assets/images/pieces/(ataxx\|cannonshogi\|chak\|chennis\|dobutsu\|empire\|janggi\|khans\|kyoto\|makruk\|mansindam\|orda\|ordamirror\|ordavsempire\|seirawan\|shinobi\|shinobiplus\|sittuyin\|spartan\|synochess\|torishogi\|xiangqi)/* | [pychess-variants](https://github.com/gbtami/pychess-variants) | pychess-variants contributors (???) | [GPLv3+] |
 public/assets/images/pieces/amazon/* | [dpldgr](https://github.com/dpldgr) | [dpldgr](https://github.com/dpldgr) | [GPLv3+] |
-public/assets/images/wallsquare/brick.svg | [pychess-variants](https://github.com/gbtami/pychess-variants) | pychess-variants contributors (???) | [GPLv3+] |
 
 [CC BY-NC-SA 4.0]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [CC BY-SA 4.0]: https://creativecommons.org/licenses/by-sa/4.0/
