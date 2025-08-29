@@ -117,7 +117,7 @@ export class TitleWidget
             this.ShowMenu=false;
             this.Menu.style.display="none";
         }
-        else if (this.CopyFEN.contains(event.target) || this.SavePGN.contains(event.target) || this.SaveImage.contains(event.target) || this.GenerateNewLink.contains(event.target) || this.GoToGithub.contains(event.target))
+        else if (this.CopyFEN.contains(event.target) || this.SavePGN.contains(event.target) || this.GenerateNewLink.contains(event.target) || this.GoToGithub.contains(event.target))
         {
             this.ShowMenu=false;
             this.Menu.style.display="none";
