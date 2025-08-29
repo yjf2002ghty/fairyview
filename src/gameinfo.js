@@ -307,11 +307,15 @@ export class GameInformationWidget
         }
         if (PreviousMoverRound==0)
         {
+            this.BlackPlayerNameDisplay.classList.add("current-mover");
+            this.WhitePlayerNameDisplay.classList.remove("current-mover");
             this.BlackTimeDisplay.classList.add("current-mover");
             this.WhiteTimeDisplay.classList.remove("current-mover");
         }
         else
         {
+            this.WhitePlayerNameDisplay.classList.add("current-mover");
+            this.BlackPlayerNameDisplay.classList.remove("current-mover");
             this.WhiteTimeDisplay.classList.add("current-mover");
             this.BlackTimeDisplay.classList.remove("current-mover");
         }

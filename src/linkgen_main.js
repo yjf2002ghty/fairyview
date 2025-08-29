@@ -9,6 +9,16 @@ function main()
     let pgn=document.getElementById("pgn");
     let notation=document.getElementById("notation");
     let coordinate=document.getElementById("coordinate");
+    let orientation=document.getElementById("orientation");
+    let halfmovenumber=document.getElementById("halfmovenumber");
+    let moveliststyle=document.getElementById("moveliststyle");
+    let showtitle=document.getElementById("showtitle");
+    let showviewer=document.getElementById("showviewer");
+    let showmovelist=document.getElementById("showmovelist");
+    let showgameinformation=document.getElementById("showgameinformation");
+    let presstomove=document.getElementById("presstomove");
+    let scrolltomove=document.getElementById("scrolltomove");
+    let allowdrawing=document.getElementById("allowdrawing");
     let linktext=document.getElementById("linktext");
     let iframecode=document.getElementById("iframe-code");
     let cssexample=document.getElementById("css-example");
@@ -22,6 +32,16 @@ function main()
         domain instanceof HTMLInputElement &&
         notation instanceof HTMLSelectElement &&
         coordinate instanceof HTMLSelectElement &&
+        orientation instanceof HTMLSelectElement &&
+        halfmovenumber instanceof HTMLInputElement &&
+        moveliststyle instanceof HTMLSelectElement &&
+        showtitle instanceof HTMLInputElement &&
+        showviewer instanceof HTMLInputElement &&
+        showmovelist instanceof HTMLInputElement &&
+        showgameinformation instanceof HTMLInputElement &&
+        presstomove instanceof HTMLInputElement &&
+        scrolltomove instanceof HTMLInputElement &&
+        allowdrawing instanceof HTMLInputElement &&
         linktext instanceof HTMLAnchorElement &&
         iframecode instanceof HTMLElement
     )
@@ -33,6 +53,7 @@ function main()
         localhostwarning.style.display="none";
         genlink.onclick=()=>{
             let url=null;
+            let bool_options=[];
             if (domain.value=="")
             {
                 window.alert("Domain is a required field.");
@@ -50,6 +71,11 @@ function main()
                 window.alert("PGN is a required field.");
                 return;
             }
+            if (halfmovenumber.value!="" && isNaN(parseInt(halfmovenumber.value)))
+            {
+                window.alert("Invalid input for half move number.");
+                return;
+            }
             let queries=new URLSearchParams();
             if (css.value)
             {
@@ -62,9 +88,25 @@ function main()
             queries.append("pgn",queryutil.EncodeQuery(pgn.value));
             queries.append("not",String(notation.selectedIndex));
             queries.append("coo",String(coordinate.selectedIndex));
-            linktext.textContent=`${domain.value}?${queries.toString()}`;
-            linktext.href=`${domain.value}?${queries.toString()}`;
-            iframecode.textContent=`<iframe src="${domain.value}?${queries.toString()}" width="800" height="600"></iframe>`;
+            queries.append("ort",String(orientation.selectedIndex));
+            if (halfmovenumber.value)
+            {
+                queries.append("ply",String(parseInt(halfmovenumber.value)));
+            }
+            queries.append("mov",String(moveliststyle.selectedIndex));
+            bool_options.push(showtitle.checked?"1":"0");
+            bool_options.push(showviewer.checked?"1":"0");
+            bool_options.push(showmovelist.checked?"1":"0");
+            bool_options.push(showgameinformation.checked?"1":"0");
+            bool_options.push(presstomove.checked?"1":"0");
+            bool_options.push(scrolltomove.checked?"1":"0");
+            bool_options.push(allowdrawing.checked?"1":"0");
+            queries.append("bol",bool_options.join(""));
+
+            let link=`${domain.value}?${queries.toString()}`;
+            linktext.textContent=link;
+            linktext.href=link;
+            iframecode.textContent=`<iframe src="${link}" width="800" height="600"></iframe>`;
             if (url.hostname=="localhost" || url.hostname=="127.0.0.1")
             {
                 localhostwarning.style.display="";

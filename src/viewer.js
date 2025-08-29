@@ -147,11 +147,15 @@ class MoveStateInformation
 
 export class ViewerWidget
 {
-    constructor(ContainerDivision)
+    constructor(ContainerDivision,ShowMoveList)
     {
         if (!(ContainerDivision instanceof HTMLDivElement))
         {
             throw TypeError("Invalid container element. Container must be a <div> element.");
+        }
+        if (typeof ShowMoveList!="boolean")
+        {
+            throw TypeError();
         }
         while (ContainerDivision.childNodes.length>0)
         {
@@ -194,10 +198,14 @@ export class ViewerWidget
         this.Wrapper.appendChild(this.MoveControlWrapper);
         ContainerDivision.appendChild(this.Wrapper);
 
+        this.ShowMoveList=ShowMoveList;
         this.MoveTree=new moveutil.MoveTree();
         this.CurrentMove=this.MoveTree.RootNode;
         this.MoveElementList=[];
         this.MoveListFirstElement=null;
+        this.NextVariationMove=null;
+        this.PreviousVariationMove=null;
+        this.GoToHalfMove=null;
     }
 
     destructor() {}
@@ -208,31 +216,63 @@ export class ViewerWidget
         {
             throw TypeError();
         }
-        let newwidth=(ContainerHeight>2*ContainerWidth/7.5)?ContainerWidth:7.5*ContainerHeight/2;
-        this.Wrapper.style.width=`${newwidth}px`;
-        this.Wrapper.style.height=`${ContainerHeight}px`;
-        this.MoveControlWrapper.style.width=`${newwidth}px`;
-        this.MoveControlWrapper.style.height=`${newwidth/7.5}px`
-        this.MoveListWrapper.style.width=`${newwidth}px`;
-        this.MoveListWrapper.style.height=`${ContainerHeight-newwidth/7.5}px`;
-        this.InitialPositionButton.style.width=
-        this.PreviousPositionButton.style.width=
-        this.CurrentPositionButton.style.width=
-        this.NextPositionButton.style.width=
-        this.FinalPositionButton.style.width=
-        `${newwidth/5}px`;
-        this.InitialPositionButton.style.height=
-        this.PreviousPositionButton.style.height=
-        this.CurrentPositionButton.style.height=
-        this.NextPositionButton.style.height=
-        this.FinalPositionButton.style.height=
-        `${newwidth/7.5}px`;
-        this.InitialPositionButton.style.fontSize=
-        this.PreviousPositionButton.style.fontSize=
-        this.CurrentPositionButton.style.fontSize=
-        this.NextPositionButton.style.fontSize=
-        this.FinalPositionButton.style.fontSize=
-        `${newwidth/15}px`;
+        if (this.ShowMoveList)
+        {
+            let newwidth=(ContainerHeight>2*ContainerWidth/7.5)?ContainerWidth:7.5*ContainerHeight/2;
+            this.Wrapper.style.width=`${newwidth}px`;
+            this.Wrapper.style.height=`${ContainerHeight}px`;
+            this.MoveControlWrapper.style.width=`${newwidth}px`;
+            this.MoveControlWrapper.style.height=`${newwidth/7.5}px`
+            this.MoveListWrapper.style.width=`${newwidth}px`;
+            this.MoveListWrapper.style.height=`${ContainerHeight-newwidth/7.5}px`;
+            this.InitialPositionButton.style.width=
+            this.PreviousPositionButton.style.width=
+            this.CurrentPositionButton.style.width=
+            this.NextPositionButton.style.width=
+            this.FinalPositionButton.style.width=
+            `${newwidth/5}px`;
+            this.InitialPositionButton.style.height=
+            this.PreviousPositionButton.style.height=
+            this.CurrentPositionButton.style.height=
+            this.NextPositionButton.style.height=
+            this.FinalPositionButton.style.height=
+            `${newwidth/7.5}px`;
+            this.InitialPositionButton.style.fontSize=
+            this.PreviousPositionButton.style.fontSize=
+            this.CurrentPositionButton.style.fontSize=
+            this.NextPositionButton.style.fontSize=
+            this.FinalPositionButton.style.fontSize=
+            `${newwidth/15}px`;
+        }
+        else
+        {
+            this.Wrapper.style.width=`${ContainerWidth}px`;
+            this.Wrapper.style.height=`${ContainerHeight}px`;
+            this.MoveControlWrapper.style.width=`${ContainerWidth}px`;
+            this.MoveControlWrapper.style.height=`${ContainerHeight}px`;
+            this.MoveListWrapper.style.width="0px";
+            this.MoveListWrapper.style.height="0px";
+            this.MoveListWrapper.style.display="none";
+            this.PreviousPositionButton.style.width=this.NextPositionButton.style.width=`${ContainerWidth/2}px`;
+            this.PreviousPositionButton.style.height=this.NextPositionButton.style.height=`${ContainerHeight}px`;
+            this.PreviousPositionButton.style.fontSize=this.NextPositionButton.style.fontSize=`${Math.min(ContainerHeight,ContainerWidth/2)/2}px`;
+            this.InitialPositionButton.style.width=
+            this.CurrentPositionButton.style.width=
+            this.FinalPositionButton.style.width=
+            "0px";
+            this.InitialPositionButton.style.height=
+            this.CurrentPositionButton.style.height=
+            this.FinalPositionButton.style.height=
+            "0px";
+            this.InitialPositionButton.style.fontSize=
+            this.CurrentPositionButton.style.fontSize=
+            this.FinalPositionButton.style.fontSize=
+            "0px";
+            this.InitialPositionButton.style.display=
+            this.CurrentPositionButton.style.display=
+            this.FinalPositionButton.style.display=
+            "none";
+        }
     }
 
     UpdateCurrentMove()
@@ -376,9 +416,9 @@ export class ViewerWidget
         Callback(currentfen,moverround,lastmove,checkedsquares,gameresult,evaluation,whitetime,blacktime,boardnotes,hiddenpieces);
     }
 
-    UpdateMoveListFromPGN(PGNMoves,Variant,FEN,Is960,Result,Notation,OnClickCallback)
+    UpdateMoveListFromPGN(PGNMoves,Variant,FEN,Is960,Result,Notation,IsHalfMovePerLineMode,OnPositionChangeCallback)
     {
-        if (typeof PGNMoves!="string" || typeof Variant!="string" || typeof FEN!="string" || typeof Is960!="boolean" || typeof Result!="string" || Notation==null || typeof OnClickCallback!="function")
+        if (typeof PGNMoves!="string" || typeof Variant!="string" || typeof FEN!="string" || typeof Is960!="boolean" || typeof Result!="string" || Notation==null || typeof IsHalfMovePerLineMode!="boolean" || typeof OnPositionChangeCallback!="function")
         {
             throw TypeError();
         }
@@ -406,6 +446,14 @@ export class ViewerWidget
         let text;
         let element,branchelement;
         let whitetime="",blacktime="";
+        if (IsHalfMovePerLineMode)
+        {
+            this.MoveListWrapper.classList.add("half-move-mode");
+        }
+        else
+        {
+            this.MoveListWrapper.classList.remove("half-move-mode");
+        }
         while (this.MoveListWrapper.childNodes.item(0))
         {
             this.MoveListWrapper.removeChild(this.MoveListWrapper.childNodes.item(0));
@@ -469,7 +517,14 @@ export class ViewerWidget
                         element.textContent=text;
                         this.MoveListWrapper.appendChild(element);
                     }
-                    currentmainmoveelement.MoveNumberElement.textContent=`${Math.ceil(tokens[i].Move.HalfMoveNumber/2)}.`;
+                    if (IsHalfMovePerLineMode)
+                    {
+                        currentmainmoveelement.MoveNumberElement.textContent=`${tokens[i].Move.HalfMoveNumber}.`;
+                    }
+                    else
+                    {
+                        currentmainmoveelement.MoveNumberElement.textContent=`${Math.ceil(tokens[i].Move.HalfMoveNumber/2)}.`;
+                    }
                     if (tokens[i].Move.TextAfter)
                     {
                         index=tokens[i].Move.TextAfter.indexOf("[%clk ");
@@ -489,7 +544,7 @@ export class ViewerWidget
                             }
                         }
                     }
-                    if (tokens[i].Move.MoverRound==0)
+                    if (tokens[i].Move.MoverRound==0 || IsHalfMovePerLineMode)
                     {
                         currentmainmoveelement.Move1Element.textContent=tmpboard.sanMove(tokens[i].Move.Move,notation);
                         currentmainmoveelement.Move1Element.classList.add("valid");
@@ -498,7 +553,7 @@ export class ViewerWidget
                             node.GameState=new GameStateInformation(tmpboard);
                             currentmainmoveelement.Move1Element.onclick=(()=>{
                                 widget.CurrentMove=node;
-                                widget.OnPositionUpdated(OnClickCallback,false);
+                                widget.OnPositionUpdated(OnPositionChangeCallback,false);
                             });
                         })(tokens[i].Node,this);
                         this.MoveElementList.push(new MoveStateInformation(tokens[i].Node,currentmainmoveelement.Move1Element,whitetime,blacktime));
@@ -512,14 +567,14 @@ export class ViewerWidget
                             node.GameState=new GameStateInformation(tmpboard);
                             currentmainmoveelement.Move2Element.onclick=(()=>{
                                 widget.CurrentMove=node;
-                                widget.OnPositionUpdated(OnClickCallback,false);
+                                widget.OnPositionUpdated(OnPositionChangeCallback,false);
                             });
                         })(tokens[i].Node,this);
                         this.MoveElementList.push(new MoveStateInformation(tokens[i].Node,currentmainmoveelement.Move2Element,whitetime,blacktime));
                     }
                     if (tokens[i].Move.Symbol)
                     {
-                        if (tokens[i].Move.MoverRound==0)
+                        if (tokens[i].Move.MoverRound==0 || IsHalfMovePerLineMode)
                         {
                             currentmainmoveelement.Move1Element.textContent+=tokens[i].Move.Symbol;
                             currentmainmoveelement.Move1Element.classList.add(SymbolToText(tokens[i].Move.Symbol));
@@ -554,7 +609,7 @@ export class ViewerWidget
                         previousmainmovenode=tokens[i].Node;
                         previousmainmoveelement=currentmainmoveelement;
                     }
-                    else if (tokens[i].Move.MoverRound==1)
+                    else if (tokens[i].Move.MoverRound==1 || IsHalfMovePerLineMode)
                     {
                         this.MoveListWrapper.appendChild(currentmainmoveelement.Element);
                         previousmainmovenode=tokens[i].Node;
@@ -614,7 +669,7 @@ export class ViewerWidget
                         node.GameState=new GameStateInformation(tmpboard);
                         element.onclick=(()=>{
                             widget.CurrentMove=node;
-                            widget.OnPositionUpdated(OnClickCallback,false);
+                            widget.OnPositionUpdated(OnPositionChangeCallback,false);
                         });
                     })(tokens[i].Node,this);
                     branchelement.appendChild(element);
@@ -648,19 +703,19 @@ export class ViewerWidget
             if (this.CurrentMove.PreviousNode)
             {
                 this.CurrentMove=this.CurrentMove.PreviousNode;
-                this.OnPositionUpdated(OnClickCallback,true);
+                this.OnPositionUpdated(OnPositionChangeCallback,true);
             }
         }
         this.NextPositionButton.onclick=()=>{
             if (this.CurrentMove.NextNodes[0])
             {
                 this.CurrentMove=this.CurrentMove.NextNodes[0];
-                this.OnPositionUpdated(OnClickCallback,true);
+                this.OnPositionUpdated(OnPositionChangeCallback,true);
             }
         }
         this.InitialPositionButton.onclick=()=>{
             this.CurrentMove=this.MoveTree.RootNode;
-            this.OnPositionUpdated(OnClickCallback,true);
+            this.OnPositionUpdated(OnPositionChangeCallback,true);
         }
         this.FinalPositionButton.onclick=()=>{
             let pointer=this.CurrentMove;
@@ -669,7 +724,7 @@ export class ViewerWidget
                 pointer=pointer.NextNodes[0];
             }
             this.CurrentMove=pointer;
-            this.OnPositionUpdated(OnClickCallback,true);
+            this.OnPositionUpdated(OnPositionChangeCallback,true);
         }
         this.CurrentPositionButton.onclick=()=>{
             let pointer=this.MoveTree.RootNode;
@@ -678,13 +733,59 @@ export class ViewerWidget
                 pointer=pointer.NextNodes[0];
             }
             this.CurrentMove=pointer;
-            this.OnPositionUpdated(OnClickCallback,true);
+            this.OnPositionUpdated(OnPositionChangeCallback,true);
         }
-        while (this.CurrentMove.NextNodes[0])
-        {
-            this.CurrentMove=this.CurrentMove.NextNodes[0];
-        }
-        this.OnPositionUpdated(OnClickCallback,true);
+        this.NextVariationMove=()=>{
+            let pointer=this.CurrentMove.ParentNode();
+            let index=this.CurrentMove.RelativePositionInParentNode;
+            if (pointer)
+            {
+                if (index<pointer.NextNodes.length-1)
+                {
+                    this.CurrentMove=pointer.NextNodes[index+1];
+                    this.OnPositionUpdated(OnPositionChangeCallback,true);
+                }
+            }
+        };
+        this.PreviousVariationMove=()=>{
+            let pointer=this.CurrentMove.ParentNode();
+            let index=this.CurrentMove.RelativePositionInParentNode;
+            if (pointer)
+            {
+                if (index>0)
+                {
+                    this.CurrentMove=pointer.NextNodes[index-1];
+                    this.OnPositionUpdated(OnPositionChangeCallback,true);
+                }
+            }
+        };
+        this.GoToHalfMove=(halfmovenumber=-1)=>{
+            if (halfmovenumber<0)
+            {
+                while (this.CurrentMove.NextNodes[0])
+                {
+                    this.CurrentMove=this.CurrentMove.NextNodes[0];
+                }
+            }
+            else
+            {
+                let i=0;
+                let pointer=this.MoveTree.RootNode;
+                for (i=0;i<halfmovenumber;i++)
+                {
+                    if (pointer.NextNodes[0])
+                    {
+                        pointer=pointer.NextNodes[0];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                this.CurrentMove=pointer;
+            }
+            this.OnPositionUpdated(OnPositionChangeCallback,true);
+        };
         return true;
     }
 
@@ -709,5 +810,15 @@ export class ViewerWidget
         {
             return false;
         }
+    }
+
+    FinalPosition()
+    {
+        this.FinalPositionButton.click();
+    }
+
+    InitialPosition()
+    {
+        this.InitialPositionButton.click();
     }
 }

@@ -3,6 +3,7 @@ import * as pocketutil from "chessgroundx/pocket";
 import * as util from "./utility.js";
 
 const EmptyMap = new Map();
+const PreventDefaultKeys=["ArrowLeft","ArrowRight"];
 
 function highlightMoveOnBoard(moveturns, chessground, moves, colors, notepositions) {
     if (!(Array.isArray(moveturns)) || !(Array.isArray(moves)) || !(Array.isArray(colors)) || !(Array.isArray(notepositions)) || chessground == null) {
@@ -203,11 +204,11 @@ function highlightMoveOnBoard(moveturns, chessground, moves, colors, notepositio
 }
 
 export class ChessgroundWidget {
-    constructor(ContainerDivision, InitialFEN, IsCaptureToHand, BoardWidth, BoardHeight, CoordinateNotation) {
+    constructor(ContainerDivision, InitialFEN, IsCaptureToHand, BoardWidth, BoardHeight, CoordinateNotation, AllowDrawingsOnBoard) {
         if (!(ContainerDivision instanceof HTMLDivElement)) {
             throw TypeError("Invalid container element. Container must be a <div> element.");
         }
-        if (typeof InitialFEN != "string" || typeof IsCaptureToHand != "boolean" || typeof BoardWidth != "number" || typeof BoardHeight != "number" || typeof CoordinateNotation!="number") {
+        if (typeof InitialFEN != "string" || typeof IsCaptureToHand != "boolean" || typeof BoardWidth != "number" || typeof BoardHeight != "number" || typeof CoordinateNotation!="number" || typeof AllowDrawingsOnBoard!="boolean") {
             throw TypeError();
         }
         while (ContainerDivision.childNodes.length > 0) {
@@ -284,6 +285,7 @@ export class ChessgroundWidget {
             autoCastle: false,
             dimensions: { width: BoardWidth, height: BoardHeight },
             fen: InitialFEN,
+            viewOnly: !AllowDrawingsOnBoard,
             disableContextMenu: true,
             movable: {
                 free: false,
@@ -301,7 +303,7 @@ export class ChessgroundWidget {
                 enabled: false,
             },
             drawable: {
-                enabled: true,
+                enabled: AllowDrawingsOnBoard,
                 visible: true,
             },
             pocketRoles: PocketRoles,
@@ -313,6 +315,7 @@ export class ChessgroundWidget {
         }
 
         this.OnWheelEventCallback=null;
+        this.OnKeyEventCallback=null;
 
         ContainerDivision.appendChild(this.Wrapper);
     }
@@ -321,6 +324,10 @@ export class ChessgroundWidget {
         if (typeof this.OnWheelEventCallback=="function")
         {
             this.BoardWrapper.removeEventListener("wheel",this.OnWheelEventCallback);
+        }
+        if (typeof this.OnKeyEventCallback=="function")
+        {
+            document.removeEventListener("keydown",this.OnKeyEventCallback);
         }
     }
 
@@ -639,5 +646,32 @@ export class ChessgroundWidget {
             }
         }
         this.BoardWrapper.addEventListener("wheel",this.OnWheelEventCallback);
+    }
+
+    SetBoardOnKeyEventCallback(Callback)
+    {
+        if (typeof Callback!="function")
+        {
+            throw TypeError();
+        }
+        if (this.OnKeyEventCallback!=null)
+        {
+            return;
+        }
+        this.OnKeyEventCallback=function(event) {
+            if (event instanceof KeyboardEvent)
+            {
+                if (event.isTrusted)
+                {
+                    if (PreventDefaultKeys.includes(event.key))
+                    {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        Callback(event.key,event.ctrlKey,event.altKey);
+                    }
+                }
+            }
+        }
+        document.addEventListener("keydown",this.OnKeyEventCallback);
     }
 }

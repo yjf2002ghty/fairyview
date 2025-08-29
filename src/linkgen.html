@@ -8,6 +8,20 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        button {
+            display: block;
+        }
+
+        label {
+            display: block;
+        }
+
+        #genlink {
+            width: 200px;
+            height: 100px;
+            font-size: 20px;
+        }
+
         .required:before {
             content: "*";
             color: red;
@@ -20,6 +34,10 @@
 
         #domain {
             width: 500px;
+        }
+
+        #halfmovenumber {
+            width: 250px;
         }
     </style>
 </head>
@@ -37,6 +55,13 @@
     <h3 class="required">Content of PGN (Should only contain 1 game and include headers):</h3>
     <textarea id="pgn" rows="20" cols="150"></textarea>
     <button id="pgn-example">Example: A chessbase live game</button>
+    <h3>Initial board orientation:</h3>
+    <select id="orientation">
+        <option>First mover's perspective</option>
+        <option>Second mover's perspective</option>
+    </select>
+    <h3>Initial half move to display (Leave blank to use latest position of the game):</h3>
+    <input type="number" id="halfmovenumber" min="0" step="1" placeholder="Input half move number here" />
     <h3>Move notation format:</h3>
     <select id="notation">
         <option>Standard/Short Algebraic Notation Without Piece Type Omission (DEFAULT)</option>
@@ -61,6 +86,20 @@
         <option>Xiangqi Algebraic-Hanzi (XIANGQI_HANNUM)</option>
         <option>Makruk Thai Letter-Thai Algebraic (THAI_ALGEBRAIC)</option>
     </select>
+    <h3>Move List Style:</h3>
+    <select id="moveliststyle">
+        <option>Full move per line (Lichess style)</option>
+        <option>Half move per line (Lishogi style)</option>
+    </select>
+    <h3>UI Appearance Control:</h3>
+    <label><input type="checkbox" id="showtitle" checked />Show title bar (Menu, title & flip board)</label>
+    <label><input type="checkbox" id="showviewer" checked />Show game viewer (Move history & position buttons)</label>
+    <label><input type="checkbox" id="showmovelist" checked />Show move list (Move history)</label>
+    <label><input type="checkbox" id="showgameinformation" checked />Show game information (Time & evaluation)</label>
+    <h3>Input Control:</h3>
+    <label><input type="checkbox" id="presstomove" checked />Enable keyboard press to move (Using ← and → keys, together with Alt or Ctrl)</label>
+    <label><input type="checkbox" id="scrolltomove" checked />Enable mouse scroll to move</label>
+    <label><input type="checkbox" id="allowdrawing" checked />Allow drawing on the board (Arrows and strokes)</label>
     <button id="genlink">Generate Link</button>
     <h2>Generated Link:</h2>
     <a id="linktext">(Not generated yet)</a>

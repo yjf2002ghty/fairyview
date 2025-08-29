@@ -15,9 +15,19 @@ Go to https://fairyview.vercel.app/linkgen.html and fill necessary fields to gen
 
 - PGN (**Required**): PGN file of this game. It should ONLY contain one game in PGN format, with all its PGN headers.
 
+- Initial board orientation: Choose the perspective of the board after FairyView is initialized.
+
+- Initial half move to display: Specify the number of half move to display after FairyView is initialized.
+
 - Move notation format: The notation of moves displayed in move history.
 
 - Board coordinate format: The format of board coordinate.
+
+- Move list style: Choose the style of move list, either Lichess style (full move in a line) or Lishogi style (half move in a line).
+
+- UI appearance control: Choose which sections of FairyView will be displayed.
+
+- Input control: Choose whether users can switch to moves by using keyboard or mouse scrolling, and whether they can draw on the board.
 
 There are examples for "Custom CSS", "Variants.ini" and "PGN". You can click the button next to the text area to see an example.
 

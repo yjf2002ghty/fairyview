@@ -10,9 +10,9 @@ import * as titlewidget from "./title.js";
 
 export class FairyViewConfig
 {
-    constructor(VariantsIni,PGN,MoveNotation,CoordinateNotation)
+    constructor(VariantsIni,PGN,MoveNotation,CoordinateNotation,Orientation,InitialHalfMove)
     {
-        if (typeof VariantsIni!="string" || typeof PGN!="string" || typeof MoveNotation!="number" || typeof CoordinateNotation!="number")
+        if (typeof VariantsIni!="string" || typeof PGN!="string" || typeof MoveNotation!="number" || typeof CoordinateNotation!="number" || typeof Orientation!="number" || typeof InitialHalfMove!="number")
         {
             throw TypeError();
         }
@@ -20,6 +20,16 @@ export class FairyViewConfig
         this.PGN=PGN;
         this.Notation=MoveNotation;
         this.Coordinate=CoordinateNotation;
+        this.InitialHalfMove=InitialHalfMove;
+        this.Orientation=(Orientation==0?"white":"black");
+        this.ShowTitle=true;
+        this.ShowGameInformation=true;
+        this.ShowViewer=true;
+        this.ShowMoveHistory=true;
+        this.KeyPressToMove=true;
+        this.MouseScrollToMove=true;
+        this.AllowDrawingsOnBoard=true;
+        this.MoveHistoryStyle=0;
     }
 
     destructor() {}
@@ -42,6 +52,10 @@ export class FairyView
             ContainerDivision.removeChild(ContainerDivision.childNodes.item(0));
         }
         this.Initialized=false;
+        this.ShowGameInformation=Config.ShowGameInformation;
+        this.ShowMoveHistory=Config.ShowMoveHistory;
+        this.ShowTitle=Config.ShowTitle;
+        this.ShowViewer=Config.ShowViewer;
 
         this.ErrorMessageDivision=document.createElement("div");
         this.ErrorMessageDivision.style.display="none";
@@ -129,10 +143,10 @@ export class FairyView
 
         this.TitleWidget=new titlewidget.TitleWidget(this.TitleContainer);
         this.GameInformationWidget=new gameinfowidget.GameInformationWidget(this.GameInformationContainer);
-        this.ChessgroundWidget=new chessgroundwidget.ChessgroundWidget(this.ChessgroundContainer,this.FEN,ffishlib.ffish.capturesToHand(this.Variant),dimensions.width,dimensions.height,Config.Coordinate);
-        this.ViewerWidget=new viewerwidget.ViewerWidget(this.ViewerContainer);
+        this.ChessgroundWidget=new chessgroundwidget.ChessgroundWidget(this.ChessgroundContainer,this.FEN,ffishlib.ffish.capturesToHand(this.Variant),dimensions.width,dimensions.height,Config.Coordinate,Config.AllowDrawingsOnBoard);
+        this.ViewerWidget=new viewerwidget.ViewerWidget(this.ViewerContainer,Config.ShowMoveHistory);
         // this.ChessgroundThemeDetector=new themeutil.ChessgroundThemeDetector(this.ChessgroundThemeDetectorContainer);
-        if (!this.ViewerWidget.UpdateMoveListFromPGN(pgn.moves,this.Variant,this.FEN,this.Is960,this.GameResult,ffishlib.ffishnotationobjects[Config.Notation],
+        if (!this.ViewerWidget.UpdateMoveListFromPGN(pgn.moves,this.Variant,this.FEN,this.Is960,this.GameResult,ffishlib.ffishnotationobjects[Config.Notation],Config.MoveHistoryStyle?true:false,
             (FEN,PreviousMoverRound,LastMove,CheckedSquares,GameResult,Evaluation,WhiteTime,BlackTime,BoardNotes,HiddenPieces)=>
             {
                 this.ChessgroundWidget.SetPosition(FEN,PreviousMoverRound,LastMove,CheckedSquares,GameResult,HiddenPieces);
@@ -168,18 +182,63 @@ export class FairyView
             }
         });
         this.TitleWidget.SetEventSite(site);
-        this.ChessgroundWidget.SetBoardOnWheelEventCallback((event,num)=>{
-            event.stopPropagation();
-            event.preventDefault();
-            if (num>0)
-            {
-                this.ViewerWidget.NextPosition()
-            }
-            else
-            {
-                this.ViewerWidget.PreviousPosition()
-            }
-        });
+        if (Config.MouseScrollToMove)
+        {
+            this.ChessgroundWidget.SetBoardOnWheelEventCallback((event,num)=>{
+                event.stopPropagation();
+                event.preventDefault();
+                if (num>0)
+                {
+                    this.ViewerWidget.NextPosition()
+                }
+                else
+                {
+                    this.ViewerWidget.PreviousPosition()
+                }
+            });
+        }
+        if (Config.KeyPressToMove)
+        {
+            this.ChessgroundWidget.SetBoardOnKeyEventCallback((key,ctrlKey,altKey)=>{
+                if (altKey)
+                {
+                    if (key=="ArrowRight")
+                    {
+                        this.ViewerWidget.NextVariationMove();
+                    }
+                    else if (key=="ArrowLeft")
+                    {
+                        this.ViewerWidget.PreviousVariationMove();
+                    }
+                }
+                else if (ctrlKey)
+                {
+                    if (key=="ArrowRight")
+                    {
+                        this.ViewerWidget.FinalPosition();
+                    }
+                    else if (key=="ArrowLeft")
+                    {
+                        this.ViewerWidget.InitialPosition();
+                    }
+                }
+                else
+                {
+                    if (key=="ArrowRight")
+                    {
+                        this.ViewerWidget.NextPosition();
+                    }
+                    else if (key=="ArrowLeft")
+                    {
+                        this.ViewerWidget.PreviousPosition();
+                    }
+                }
+            });
+        }
+        setTimeout(()=>{
+            this.ChessgroundWidget.ChessgroundInstance.set({orientation: Config.Orientation});
+            this.ViewerWidget.GoToHalfMove(Config.InitialHalfMove);
+        },50);
         // this.TitleWidget.SetSaveImageCallback(()=>{
         //     let themes=this.ChessgroundThemeDetector.GetThemes();
         //     let width=this.ChessgroundWidget.BoardWidth;
@@ -217,7 +276,7 @@ export class FairyView
             return;
         }
         let verticallayout=false;
-        if (ContainerHeight>ContainerWidth)
+        if (ContainerHeight>ContainerWidth || !this.ShowMoveHistory)
         {
             this.UnderTitleDivision.classList.add("vertical");
             verticallayout=true;
@@ -227,17 +286,43 @@ export class FairyView
             this.UnderTitleDivision.classList.remove("vertical");
         }
         let titlecontainerwidth=ContainerWidth;
-        let titlecontainerheight=verticallayout?0.1*ContainerHeight:0.1*ContainerHeight;
+        let titlecontainerheight=0.1*ContainerHeight;
         let undertitledivwidth=ContainerWidth;
         let undertitledivheight=verticallayout?0.9*ContainerHeight:0.9*ContainerHeight;
+        if (!this.ShowTitle)
+        {
+            titlecontainerwidth=0;
+            titlecontainerheight=0;
+            undertitledivheight=ContainerHeight;
+        }
         let leftpaneldivwidth=verticallayout?undertitledivwidth:0.7*undertitledivwidth;
         let leftpaneldivheight=verticallayout?0.5*undertitledivheight:undertitledivheight;
         let viewercontainerwidth=verticallayout?undertitledivwidth:0.3*undertitledivwidth;
         let viewercontainerheight=verticallayout?0.5*undertitledivheight:undertitledivheight;
+        if (!this.ShowViewer)
+        {
+            leftpaneldivwidth=undertitledivwidth;
+            leftpaneldivheight=undertitledivheight;
+            viewercontainerwidth=0;
+            viewercontainerheight=0;
+        }
+        else if (!this.ShowMoveHistory)
+        {
+            leftpaneldivwidth=undertitledivwidth;
+            leftpaneldivheight=0.8*undertitledivheight;
+            viewercontainerwidth=undertitledivwidth;
+            viewercontainerheight=0.2*undertitledivheight;
+        }
         let gameinfocontainerwidth=leftpaneldivwidth;
         let gameinfocontainerheight=0.2*leftpaneldivheight;
         let chessgroundcontainerwidth=leftpaneldivwidth;
         let chessgroundcontainerheight=0.8*leftpaneldivheight;
+        if (!this.ShowGameInformation)
+        {
+            gameinfocontainerwidth=0;
+            gameinfocontainerheight=0;
+            chessgroundcontainerheight=leftpaneldivheight;
+        }
         this.Wrapper.style.width=`${ContainerWidth}px`;
         this.Wrapper.style.height=`${ContainerHeight}px`;
         this.TitleContainer.style.width=`${titlecontainerwidth}px`;
@@ -253,8 +338,29 @@ export class FairyView
         this.ChessgroundContainer.style.width=`${chessgroundcontainerwidth}px`;
         this.ChessgroundContainer.style.height=`${chessgroundcontainerheight}px`;
         this.ChessgroundWidget.CalculateElementSize(chessgroundcontainerwidth,chessgroundcontainerheight);
-        this.GameInformationWidget.CalculateElementSize(gameinfocontainerwidth,gameinfocontainerheight);
-        this.ViewerWidget.CalculateElementSize(viewercontainerwidth,viewercontainerheight);
-        this.TitleWidget.CalculateElementSize(titlecontainerwidth,titlecontainerheight);
+        if (this.ShowGameInformation)
+        {
+            this.GameInformationWidget.CalculateElementSize(gameinfocontainerwidth,gameinfocontainerheight);
+        }
+        else
+        {
+            this.GameInformationContainer.style.display="none";
+        }
+        if (this.ShowViewer)
+        {
+            this.ViewerWidget.CalculateElementSize(viewercontainerwidth,viewercontainerheight);
+        }
+        else
+        {
+            this.ViewerContainer.style.display="none";
+        }
+        if (this.ShowTitle)
+        {
+            this.TitleWidget.CalculateElementSize(titlecontainerwidth,titlecontainerheight);
+        }
+        else
+        {
+            this.TitleContainer.style.display="none";
+        }
     }
 }
