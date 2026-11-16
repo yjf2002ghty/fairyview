@@ -1090,21 +1090,41 @@
         }
 
         :root {
-            --text-color: #555;
-            --bg-color: #eee;
-            --title-text-color: #000;
-            --title-bg-color: #ccc;
-            --viewer-non-mainline-bg-color: #ddd;
-            --branch-move-hover-color: #aaa;
-            --border-color: #aaa;
-            --button-active-text-color: #fff;
-            --button-active-color: #acf;
-            --menu-color: #fff;
-            --menu-active-text-color: #555;
-            --menu-active-color: #ccc;
-            --menu-hr-color: #ddd;
-            --button-clicked-text-color: #eee;
-            --button-clicked-color: #555;
+            --bg: #f6f4ef;
+            --surface: #ffffff;
+            --surface2: #f0ede6;
+            --border: #e3dfd6;
+            --border2: #d3cec3;
+            --text: #1d1b17;
+            --muted: #6f6a60;
+            --faint: #a39e94;
+            --accent: #1f7a86;
+            --accent-hover: #196a75;
+            --accent-ink: #ffffff;
+            --accent-soft: #dff0f2;
+            --accent-soft2: #c3e3e6;
+            --good: #3a8a4c;
+            --bad: #b8452f;
+            --warn: #b7791f;
+
+
+            --text-color: var(--text);
+            --bg-color: var(--bg);
+            --title-text-color: var(--text);
+            --title-bg-color: var(--surface);
+            --viewer-non-mainline-bg-color: var(--surface2);
+            --branch-move-hover-color: var(--border);
+            --border-color: var(--border);
+            --button-active-text-color: var(--text);
+            --button-active-color: var(--surface2);
+            --current-move-text-color: var(--accent);
+            --current-move-bg-color: var(--accent-soft);
+            --menu-color: var(--surface);
+            --menu-active-text-color: var(--text);
+            --menu-active-color: var(--surface2);
+            --menu-hr-color: var(--border);
+            --button-clicked-text-color: var(--text);
+            --button-clicked-color: var(--border);
             --disastrous-move-color: #dc143c;
             --bad-move-color: #ffa500;
             --dubious-move-color: #ffd700;
@@ -1260,12 +1280,18 @@
             display: flex;
             flex-direction: column;
             background-color: var(--bg-color);
+            border-top-color: var(--border-color);
+            border-top-style: solid;
+            border-left-color: var(--border-color);
+            border-left-style: solid;
         }
 
         div.gameinfo-wrapper {
             display: flex;
             flex-direction: row;
             background-color: var(--bg-color);
+            border-top-color: var(--border-color);
+            border-top-style: solid;
         }
 
         div.title-wrapper {
@@ -1273,6 +1299,8 @@
             flex-direction: row;
             color: var(--title-text-color);
             background-color: var(--title-bg-color);
+            border-bottom-color: var(--border-color);
+            border-bottom-style: solid;
         }
 
         div.evalbar-wrapper {
@@ -1285,23 +1313,18 @@
 
 
         div.title-wrapper button:before {
-            color: var(--title-text-color);
+            color: var(--muted);
             background-color: var(--title-bg-color);
         }
 
         div.title-wrapper button:hover:before {
-            color: var(--button-active-text-color);
+            color: var(--text-color);
             background-color: var(--button-active-color);
         }
 
         div.title-wrapper button:active:before {
             color: var(--button-clicked-text-color);
             background-color: var(--button-clicked-color);
-        }
-
-        button.menu-button {
-            color: #0000;
-            background-color: #0000;
         }
 
         button.menu-button:before {
@@ -1314,11 +1337,6 @@
             justify-content: center;
             align-items: center;
             font-family: 'Times New Roman', Times, serif;
-        }
-
-        button.flip-board-button {
-            color: #0000;
-            background-color: #0000;
         }
 
         button.flip-board-button:before {
@@ -1501,6 +1519,8 @@
         div.viewer-move-control-wrapper {
             display: flex;
             flex-direction: row;
+            border-top-color: var(--border-color);
+            border-top-style: solid;
         }
 
         button.viewer-button {
@@ -1601,8 +1621,8 @@
         }
 
         p.main-line-first-move.current-move, p.main-line-second-move.current-move {
-            color: var(--button-active-text-color);
-            background-color: var(--button-active-color);
+            color: var(--current-move-text-color);
+            background-color: var(--current-move-bg-color);
         }
 
         p.main-line-first-move.symbol-blunder, p.main-line-second-move.symbol-blunder {
@@ -1804,8 +1824,8 @@
         }
 
         p.branch-move.current-move {
-            color: var(--button-active-text-color);
-            background-color: var(--button-active-color);
+            color: var(--current-move-text-color);
+            background-color: var(--current-move-bg-color);
         }
 
         p.branch-move.current-move:hover {

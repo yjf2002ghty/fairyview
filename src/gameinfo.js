@@ -138,9 +138,10 @@ export class GameInformationWidget
         {
             throw TypeError();
         }
-        let newheight=(ContainerWidth>3*ContainerHeight)?ContainerHeight:ContainerWidth/3;
+        let newheight=((ContainerWidth>3*ContainerHeight)?ContainerHeight:ContainerWidth/3)*0.99;
         this.Wrapper.style.width=`${ContainerWidth}px`;
         this.Wrapper.style.height=`${newheight}px`;
+        this.Wrapper.style.borderTopWidth=`${newheight*0.01}px`;
         this.EvaluationBarContainer.style.width=`${newheight}px`;
         this.EvaluationBarContainer.style.height=`${newheight}px`;
         this.WhiteInformationDivision.style.width=`${(ContainerWidth-newheight)/2}px`;

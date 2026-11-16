@@ -218,11 +218,14 @@ export class ViewerWidget
         }
         if (this.ShowMoveList)
         {
-            let newwidth=(ContainerHeight>2*ContainerWidth/7.5)?ContainerWidth:7.5*ContainerHeight/2;
+            let newwidth=((ContainerHeight>2*ContainerWidth/7.5)?ContainerWidth:7.5*ContainerHeight/2)*0.99;
             this.Wrapper.style.width=`${newwidth}px`;
             this.Wrapper.style.height=`${ContainerHeight}px`;
+            this.Wrapper.style.borderLeftWidth=`${newwidth*0.01}px`;
+            this.Wrapper.style.borderTopWidth=`0px`;
             this.MoveControlWrapper.style.width=`${newwidth}px`;
-            this.MoveControlWrapper.style.height=`${newwidth/7.5}px`
+            this.MoveControlWrapper.style.height=`${(newwidth/7.5)*0.99}px`
+            this.MoveControlWrapper.style.borderTopWidth=`${(newwidth/7.5)*0.01}px`
             this.MoveListWrapper.style.width=`${newwidth}px`;
             this.MoveListWrapper.style.height=`${ContainerHeight-newwidth/7.5}px`;
             this.InitialPositionButton.style.width=
@@ -247,7 +250,9 @@ export class ViewerWidget
         else
         {
             this.Wrapper.style.width=`${ContainerWidth}px`;
-            this.Wrapper.style.height=`${ContainerHeight}px`;
+            this.Wrapper.style.height=`${ContainerHeight*0.99}px`;
+            this.Wrapper.style.borderTopWidth=`${ContainerHeight*0.01}px`;
+            this.Wrapper.style.borderLeftWidth=`0px`;
             this.MoveControlWrapper.style.width=`${ContainerWidth}px`;
             this.MoveControlWrapper.style.height=`${ContainerHeight}px`;
             this.MoveListWrapper.style.width="0px";

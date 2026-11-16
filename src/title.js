@@ -95,9 +95,10 @@ export class TitleWidget
         {
             throw TypeError();
         }
-        let newheight=(ContainerWidth>3*ContainerHeight)?ContainerHeight:ContainerWidth/3;
+        let newheight=((ContainerWidth>3*ContainerHeight)?ContainerHeight:ContainerWidth/3)*0.99;
         this.Wrapper.style.width=`${ContainerWidth}px`;
         this.Wrapper.style.height=`${newheight}px`;
+        this.Wrapper.style.borderBottomWidth=`${newheight*0.01}px`;
         this.MenuButton.style.width=this.MenuButton.style.height=`${newheight}px`;
         this.MenuButton.style.fontSize=`${0.5*newheight}px`;
         this.FlipBoardButton.style.width=this.FlipBoardButton.style.height=`${newheight}px`;
