@@ -553,6 +553,10 @@ export class ViewerWidget
                     {
                         currentmainmoveelement.Move1Element.textContent=tmpboard.sanMove(tokens[i].Move.Move,notation);
                         currentmainmoveelement.Move1Element.classList.add("valid");
+                        if (tokens[i].Move.TextAfter.includes("[%cal") || tokens[i].Move.TextAfter.includes("[%csl"))
+                        {
+                            currentmainmoveelement.Move1Element.classList.add("has-markers");
+                        }
                         tmpboard.push(tokens[i].Move.Move);
                         (function(node,widget){
                             node.GameState=new GameStateInformation(tmpboard);
@@ -567,6 +571,10 @@ export class ViewerWidget
                     {
                         currentmainmoveelement.Move2Element.textContent=tmpboard.sanMove(tokens[i].Move.Move,notation);
                         currentmainmoveelement.Move2Element.classList.add("valid");
+                        if (tokens[i].Move.TextAfter.includes("[%cal") || tokens[i].Move.TextAfter.includes("[%csl"))
+                        {
+                            currentmainmoveelement.Move2Element.classList.add("has-markers");
+                        }
                         tmpboard.push(tokens[i].Move.Move);
                         (function(node,widget){
                             node.GameState=new GameStateInformation(tmpboard);
